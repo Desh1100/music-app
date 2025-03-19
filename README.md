@@ -23,7 +23,7 @@ A React Native mobile application built with Expo that allows users to search an
 
 1. Clone the repository
    ```bash
-   git clone https://github.com/yourusername/itunes-music-app.git
+   git clone https://github.com/Desh1100/itunes-music-app.git
    cd itunes-music-app
    ```
 

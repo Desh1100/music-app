@@ -220,7 +220,6 @@ const styles = StyleSheet.create({
     borderColor: "#FBBC05",
   },
   detailsContainer: {
-    backgroundColor: "#1F1F1F",
     borderRadius: 8,
     padding: 16,
   },

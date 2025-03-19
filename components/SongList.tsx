@@ -13,7 +13,12 @@ type Song = {
   collectionName: string;
   trackName: string;
   artworkUrl100: string;
-  trackId?: number;
+  trackId: number;
+  trackPrice?: number;
+  releaseDate?: string;
+  primaryGenreName?: string;
+  country?: string;
+  description?: string;
 };
 
 type SongListProps = {
@@ -23,6 +28,7 @@ type SongListProps = {
 };
 
 export default function SongList({ data, isLoading, onSelect }: SongListProps) {
+  // Render loading indicator when loading
   if (isLoading) {
     return (
       <View style={styles.loadingContainer}>
@@ -30,6 +36,15 @@ export default function SongList({ data, isLoading, onSelect }: SongListProps) {
       </View>
     );
   }
+
+  // Render empty component when no data
+  const renderEmptyComponent = () => (
+    <View style={styles.emptyContainer}>
+      <Text style={styles.emptyText}>
+        No songs found. Try searching for something else.
+      </Text>
+    </View>
+  );
 
   return (
     <FlatList
@@ -42,13 +57,7 @@ export default function SongList({ data, isLoading, onSelect }: SongListProps) {
       )}
       contentContainerStyle={styles.listContainer}
       showsVerticalScrollIndicator={false}
-      ListEmptyComponent={
-        <View style={styles.emptyContainer}>
-          <Text style={styles.emptyText}>
-            No songs found. Try searching for something else.
-          </Text>
-        </View>
-      }
+      ListEmptyComponent={renderEmptyComponent}
     />
   );
 }

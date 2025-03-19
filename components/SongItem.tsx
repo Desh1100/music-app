@@ -1,80 +1,104 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
-type Song = {
+interface Song {
+  trackId: number;
   artistName: string;
   collectionName: string;
   trackName: string;
   artworkUrl100: string;
-};
+  trackPrice?: number;
+  description?: string; // Added description field as optional
+}
 
-type SongItemProps = {
+interface SongItemProps {
   item: Song;
   onPress: () => void;
-};
+}
 
-export default function SongItem({ item, onPress }: SongItemProps) {
+const SongItem: React.FC<SongItemProps> = ({ item, onPress }) => {
+  // Determine if we should add bottom margin to collection name
+  const collectionNameStyle = [
+    styles.collectionName,
+    item.description ? { marginBottom: 2 } : null,
+  ];
+
   return (
-    <TouchableOpacity style={styles.songItem} onPress={onPress}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
+      {/* Artwork */}
       <Image
         source={{ uri: item.artworkUrl100 }}
         style={styles.artwork}
         resizeMode="cover"
       />
-      <View style={styles.songInfo}>
+
+      {/* Song details */}
+      <View style={styles.detailsContainer}>
         <Text style={styles.trackName} numberOfLines={1}>
-          {item.trackName || "Unknown Track"}
+          {item.trackName}
         </Text>
         <Text style={styles.artistName} numberOfLines={1}>
           {item.artistName}
         </Text>
-        <Text style={styles.collectionName} numberOfLines={1}>
+        <Text style={collectionNameStyle} numberOfLines={1}>
           {item.collectionName}
         </Text>
+
+        {/* Description - only show if available */}
+        {item.description && (
+          <Text style={styles.description} numberOfLines={2}>
+            {item.description}
+          </Text>
+        )}
       </View>
-      <TouchableOpacity style={styles.moreButton}>
-        <Ionicons name="ellipsis-vertical" size={20} color="#9CA3AF" />
-      </TouchableOpacity>
+
+      {/* Right arrow icon */}
+      <Ionicons name="chevron-forward" size={20} color="#9CA3AF" />
     </TouchableOpacity>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  songItem: {
+  container: {
     flexDirection: "row",
-    backgroundColor: "#1F313F",
-    borderRadius: 8,
-    marginBottom: 12,
-    padding: 12,
     alignItems: "center",
+    padding: 12,
+    backgroundColor: "#1F1F1F",
+    borderRadius: 8,
+    marginBottom: 10,
   },
   artwork: {
-    width: 60,
-    height: 60,
+    width: 50,
+    height: 50,
     borderRadius: 4,
   },
-  songInfo: {
+  detailsContainer: {
     flex: 1,
     marginLeft: 12,
-    justifyContent: "center",
+    marginRight: 8,
   },
   trackName: {
-    color: "white",
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "500",
+    color: "white",
     marginBottom: 2,
   },
   artistName: {
-    color: "#9CA3AF",
     fontSize: 14,
+    color: "#FBBC05",
     marginBottom: 2,
   },
   collectionName: {
-    color: "#9CA3AF",
     fontSize: 12,
+    color: "#9CA3AF",
   },
-  moreButton: {
-    padding: 8,
+  description: {
+    fontSize: 11,
+    color: "#9CA3AF",
+    fontStyle: "italic",
+    lineHeight: 14,
   },
 });
+
+export default SongItem;
